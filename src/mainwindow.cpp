@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -304,11 +305,15 @@ void MainWindow::on_pushButtonDaysRefresh_clicked()
 
 void MainWindow::on_pushButtonShowDayCurve_clicked()
 {
-    ui->lineEditDateShow->setText(ui->listWidgetDaysInfo->currentItem()->text());
-    ui->tabWidget->setCurrentIndex(0);
+    if (ui->listWidgetDaysInfo->currentItem()) {
+        ui->lineEditDateShow->setText(ui->listWidgetDaysInfo->currentItem()->text());
+        ui->tabWidget->setCurrentIndex(0);
 
-    drawData(ui->lineEditDateShow->text());
-    plotPaint();
+        drawData(ui->lineEditDateShow->text());
+        plotPaint();
+    } else {
+        QMessageBox::warning(this, tr("Warning"), tr("select a date item first!\n"));
+    }
 }
 
 void MainWindow::on_pushButtonSave_clicked()
@@ -339,5 +344,13 @@ void MainWindow::showCoordinates(QMouseEvent *me)
         myBrush = QBrush(Qt::red, Qt::DiagCrossPattern);
         palette.setBrush( QPalette::Text,  myBrush);
         ui->lineEditPointValue->setPalette(palette);
+    }
+}
+
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    qDebug() << index;
+    if (index == 1) {
+        on_pushButtonDaysRefresh_clicked();
     }
 }
