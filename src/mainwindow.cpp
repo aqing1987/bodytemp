@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->tableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(setId(int, int)));
     connect(ui->customPlot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(showCoordinates(QMouseEvent *)));
+    connect(ui->menuBar, SIGNAL(triggered(QAction*)), this, SLOT(trigerMenu(QAction*)));
 
     if (!readXML()) {
         qFatal("read XML err");
@@ -32,6 +33,26 @@ MainWindow::MainWindow(QWidget *parent) :
     plotPaint();
     ui->tabWidget->setCurrentIndex(0);
     setWindowTitle("Body Temperature Monitor");
+}
+
+void MainWindow::saveTemperaturePicture()
+{
+    QString defaultName = ui->lineEditDateShow->text() + "_body_temp.jpg";
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                 defaultName, tr("Images (*.jpg)"));
+    if (fileName.isNull()) {
+        return;
+    }
+
+    qDebug() << fileName;
+    ui->customPlot->saveJpg(fileName, 640, 480);
+}
+
+void MainWindow::trigerMenu(QAction* act)
+{
+    if (act->text() == "Export") {
+        saveTemperaturePicture();
+    }
 }
 
 void MainWindow::setId(int row, int column)
@@ -314,19 +335,6 @@ void MainWindow::on_pushButtonShowDayCurve_clicked()
     } else {
         QMessageBox::warning(this, tr("Warning"), tr("select a date item first!\n"));
     }
-}
-
-void MainWindow::on_pushButtonSave_clicked()
-{
-    QString defaultName = ui->lineEditDateShow->text() + "_body_temp.jpg";
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                 defaultName, tr("Images (*.jpg)"));
-    if (fileName.isNull()) {
-        return;
-    }
-
-    qDebug() << fileName;
-    ui->customPlot->saveJpg(fileName, 640, 480);
 }
 
 void MainWindow::showCoordinates(QMouseEvent *me)
