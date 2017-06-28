@@ -49,10 +49,21 @@ void MainWindow::saveTemperaturePicture()
 }
 
 void MainWindow::trigerMenu(QAction* act)
-{
-    if (act->text() == "Export") {
+{    
+    if (act->text() == "&Export") {
         saveTemperaturePicture();
+    } else if (act->text() == "&About") {
+        aboutTriggered();
     }
+}
+
+void MainWindow::aboutTriggered()
+{
+    QMessageBox::about(this, tr("About BodyTemp"),
+                       (tr("<p><b>BodyTemp %1</b></p><p>BodyTemp is a body temperature recorder using Qt.</p>"
+                           "<ul>").arg(APPLICATION_VERSION)
+                        + tr("</ul>"
+                             "<p>See <a href=\"https://github.com/aqing1987/bodytemp\">github.com/aqing1987/bodytemp</a> for more information.</p><p>&copy; 2017 Kevin Chen</p>")));
 }
 
 void MainWindow::setId(int row, int column)

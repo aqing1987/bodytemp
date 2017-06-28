@@ -4,6 +4,10 @@
 #
 #-------------------------------------------------
 
+include(BodyTemp.pri)
+
+DEFINES += APPLICATION_VERSION=\\\"$${APPLICATION_VERSION}\\\"
+
 QT       += core gui sql xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport

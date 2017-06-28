@@ -49,6 +49,7 @@ private:
     void dbInit();
     void plotPaint();
     void saveTemperaturePicture();
+    void aboutTriggered();
 
     bool readXML();
 };

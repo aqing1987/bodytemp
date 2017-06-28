@@ -4,6 +4,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setApplicationVersion(APPLICATION_VERSION);
+
     MainWindow w;
     w.show();
 
